@@ -21,11 +21,13 @@ import scala.jdk.CollectionConverters.*
 import scala.jdk.javaapi.CollectionConverters.asJava
 
 /**
- * A custom example using CloudSim Plus framework which has a predefined DataCenter configuration
- * having First Fit VM Allocation Policy, Full Cloudlet Utilization Model, Space-Shared
- * Cloudlet Scheduler Type, Time-Shared VM Scheduler Type
- *
+ * An cloud model implementation using CloudSim Plus framework which has a predefined DataCenter configuration having the below policies:
+ * - First Fit VM Allocation Policy
+ * - Full Cloudlet Utilization Model
+ * - Time-Shared Cloudlet Scheduler Type
+ * - Time-Shared VM Scheduler Type
  */
+
 object MySimulation1 {
 
   val SIM = "my_simulation1"
@@ -56,7 +58,7 @@ object MySimulation1 {
   LOG.info("The Simulation has ended.")
 
   /**
-   * Creates a Datacenter and its Hosts.
+   * Creates a Datacenter and its Hosts using the First fit VM allocation policy.
    */
   def createDatacenter(numHosts: Int): DatacenterSimple = {
     val hostList_new = (1 to numHosts).map(host => createHost).toList
@@ -71,7 +73,7 @@ object MySimulation1 {
   }
 
   /**
-   * Creates a list of Hosts (Physical entities to which VMs will be allocated to be run inside Data centers).
+   * Creates a list of Hosts with a time shared VM allocation policy (The hosts are physical machines to which VMs will be allocated for serving the cloudlets).
    */
   def createHost: Host = {
 
@@ -83,7 +85,7 @@ object MySimulation1 {
   }
 
   /**
-   * Creates a list of VMs.
+   * Creates a list of VMs using the time shared scheduler policy to serve the processing elements of the cloudlets.
    */
   def createVms: util.List[Vm] = {
     val list = (1 to VMS).map(vm => new VmSimple(1000, VM_PES).setCloudletScheduler(new CloudletSchedulerTimeShared)).toList
@@ -91,7 +93,7 @@ object MySimulation1 {
   }
 
   /**
-   * Creates a list of Cloudlets.
+   * Creates a list of Cloudlets with utilization mode set to Full.
    */
   def createCloudlets: util.List[CloudletSimple] = {
     // Uses the Full Utilization Model meaning a Cloudlet always utilizes a given allocated resource from its Vm at 100%, all the time.

@@ -14,7 +14,7 @@ class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
   val LOG: Logger = LoggerFactory.getLogger(getClass)
 
   // check this test case
-  test("MySimulation1.createDatacenter") {
+  test("MySimulation1.createDataCenters") {
 
     val name = "datacenter"
 

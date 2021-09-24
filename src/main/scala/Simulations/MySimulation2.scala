@@ -21,11 +21,13 @@ import scala.jdk.CollectionConverters.*
 import scala.jdk.javaapi.CollectionConverters.asJava
 
 /**
- * A custom example using CloudSim Plus framework which has a predefined DataCenter configuration
- * having Worst Fit (Simple) VM Allocation Policy, Dynamic Cloudlet Utilization Model, Time-Shared
- * Cloudlet Scheduler Type, Space-Shared VM Scheduler Type
- *
+ * An cloud model implementation using CloudSim Plus framework which has a predefined DataCenter configuration having the below policies:
+ * - Best Fit VM Allocation Policy
+ * - Dynamic Cloudlet Utilization Model (set to 25% utilization)
+ * - Time-Shared Cloudlet Scheduler Type
+ * - Space-Shared VM Scheduler Type
  */
+
 object MySimulation2 {
 
   val SIM = "my_simulation2"
@@ -56,7 +58,7 @@ object MySimulation2 {
   LOG.info("The Simulation has ended.")
 
   /**
-   * Creates a Datacenter and its Hosts.
+   * Creates a Datacenter and its Hosts using the Best fit VM allocation policy.
    */
   def createDatacenter(numHosts: Int): DatacenterSimple = {
     val hostList_new = (1 to numHosts).map(host => createHost).toList
@@ -71,7 +73,7 @@ object MySimulation2 {
   }
 
   /**
-   * Creates a list of Hosts (Physical entities to which VMs will be allocated to be run inside Data centers).
+   * Creates a list of Hosts with a space shared VM allocation policy (The hosts are physical machines to which VMs will be allocated for serving the cloudlets).
    */
   def createHost: Host = {
 
@@ -83,7 +85,7 @@ object MySimulation2 {
   }
 
   /**
-   * Creates a list of VMs.
+   * Creates a list of VMs using the time shared scheduler policy to serve the processing elements of the cloudlets.
    */
   def createVms: util.List[Vm] = {
     val list = (1 to VMS).map(vm => new VmSimple(1000, VM_PES).setCloudletScheduler(new CloudletSchedulerTimeShared)).toList
@@ -91,11 +93,11 @@ object MySimulation2 {
   }
 
   /**
-   * Creates a list of Cloudlets.
+   * Creates a list of Cloudlets with utilization mode dynamically set to 25%.
    */
   def createCloudlets: util.List[CloudletSimple] = {
-    // UtilizationModel defining the Cloudlets use only 50% of any resource all the time
-    val utilizationModel = new UtilizationModelDynamic(0.5)
+    // UtilizationModel defining the Cloudlets use only 25% of any resource all the time
+    val utilizationModel = new UtilizationModelDynamic(0.25)
     val list = (1 to CLOUDLETS).map(c => new CloudletSimple(CLOUDLET_LENGTH, CLOUDLET_PES, utilizationModel)).toList
     list.asJava
   }
