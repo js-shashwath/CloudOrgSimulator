@@ -1,10 +1,10 @@
 package Simulations
 
-import com.typesafe.config.{Config, ConfigFactory}
-import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.BeforeAndAfter
-import org.slf4j.{Logger, LoggerFactory}
 import Simulations.MySimulation1
+import com.typesafe.config.{Config, ConfigFactory}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.funsuite.AnyFunSuite
+import org.slf4j.{Logger, LoggerFactory}
 
 class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
 
@@ -13,7 +13,6 @@ class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
   val conf: Config = ConfigFactory.load(SIM + ".conf")
   val LOG: Logger = LoggerFactory.getLogger(getClass)
 
-  // check this test case
   test("MySimulation1.createDataCenters") {
 
     val name = "datacenter"
@@ -22,10 +21,10 @@ class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
 
     val numHosts = conf.getInt(SIM + ".datacenter.numHosts")
 
-    LOG.debug("Testing whether data center got created successfully")
+    LOG.debug("Testing whether data center for " + SIM + " got created successfully")
     println(assert(datacenter != null))
 
-    LOG.debug("Testing whether the number of hosts matches the config")
+    LOG.debug("Testing whether the number of hosts for " + SIM + " matches the config")
     println(assert(datacenter.getHostList.size() == numHosts))
   }
 
@@ -36,10 +35,10 @@ class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
     // VMs creation call
     val vmlist = MySimulation1.createVms
 
-    LOG.debug("Testing whether vmlist not empty ")
+    LOG.debug("Testing whether vmlist for " + SIM +" is not empty ")
     assert(vmlist.size() != 0)
 
-    LOG.debug("Testing whether number of VMs matches config")
+    LOG.debug("Testing whether number of VMs for " + SIM + " matches config")
     assert(vmlist.size == num_vms)
   }
 
@@ -50,26 +49,25 @@ class MySimulation1Test extends AnyFunSuite with BeforeAndAfter {
     // Host creation call
     val host = MySimulation1.createHost
 
-    LOG.debug("Testing whether host not null ")
+    LOG.debug("Testing whether host for " + SIM + " not null ")
     assert(host != null)
 
-    LOG.debug("Testing whether host storage matches config")
+    LOG.debug("Testing whether host storage for " + SIM + " matches config")
     assert(host.getStorage.getCapacity == conf.getInt(SIM + "." + "host" + ".storage"))
   }
 
   test("MySimulation1.createCloudlets") {
 
-    val num_cloudlets =conf.getInt(SIM + "." + "numCloudlets")
+    val num_cloudlets = conf.getInt(SIM + "." + "numCloudlets")
 
     // Cloudlets creation call
     val cloudlets = MySimulation1.createCloudlets
 
-    LOG.debug("Testing whether cloudlets list not empty ")
+    LOG.debug("Testing whether cloudlets for " + SIM + " is list not empty ")
     assert(cloudlets.size() != 0)
 
-    LOG.debug("Testing whether cloudlets list size matches config")
+    LOG.debug("Testing whether cloudlets for " + SIM + " list size matches config")
     assert(cloudlets.size() == num_cloudlets)
   }
-
 
 }

@@ -7,10 +7,10 @@ object Simulation:
   val logger = CreateLogger(classOf[Simulation])
 
   @main def runSimulation =
-    logger.info("Constructing a cloud model...")
+    logger.info(".........Constructing 3 different cloud model.........")
     MySimulation1.Start()
     MySimulation2.Start()
     MySimulation3.Start()
-    logger.info("Finished cloud simulation...")
+    logger.info(".........Finished the cloud simulations.........")
 
 class Simulation
