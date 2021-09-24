@@ -21,25 +21,31 @@ import scala.jdk.CollectionConverters._
 import scala.jdk.javaapi.CollectionConverters.asJava
 
 /**
- * An example using CloudSim Plus framework which provides the user a choice of
- * configuration between the SaaS/IaaS/PaaS/FaaS cloud provider models containing
- * 3 different data centers that will be created on-the-go as per the user's selection
- * of choice of service.
+ * An cloud model implementation using CloudSim Plus framework which has a predefined DataCenter configurations to provide SaaS/IaaS/PaaS/FaaS cloud services across
+ * 3 different models containing data centers that will be created on-the-go as per the user's selection of choice of service.
  *
- * This represents the fifth and final step in the CS 441 Homework 1 issued in Fall 2021 at
- * University of Illinois at Chicago (UIC)
- *
+ * The following logic is used to differentiate between the different data centers for simulating the services as per the user requested configurations :
+
+    - If the user enters only cloudlet length -> The simulation takes places in DataCenter 1 as this is configured to correspond to Faas.
+
+    - If the user enters cloudlet length, number of cloudlets and also number of cloudlet PEs -> The simulation takes place in DataCenter1 as this is configured
+    to correspond to SaaS.
+
+    - If the user enters cloudlet length, number of cloudlets, number of cloudlet PEs, and also cloudlet scheduler type -> The simulation takes place in DataCenter2
+    as this is configured to correspond to PaaS.
+
+    - If the user enters cloudlet length, number of cloudlets, number of cloudlet PEs, cloudlet scheduler type and also his/her choice of Operating Systems ->
+    The simulation takes place in DataCenter3 as this is configured to correspond to IaaS. (The user can enter his/her choice of VM Allocation Policy, but if NA is selected,
+    the default policy used will be Round-Robin allocation policy).
  */
 
 object MySimulation3 {
 
-  println("Welcome to Cloud Plus Simulation Arena ! Please answer a brief questionnaire and we'll get your cloud simulations up and running.")
-
-  println("Please enter number of cloudlets: (0 - if you don't wish to enter any)")
+  println("Please enter number of cloudlets: (0 - if nothing is to be set as the input)")
   val numberOfCloudlets: Int = scala.io.StdIn.readInt()
-  println("Please enter cloudlet length: (0 - if you don't wish to enter")
+  println("Please enter cloudlet length: (0 - if nothing is to be set as the input")
   val cloudletLength: Int = scala.io.StdIn.readInt()
-  println("Please enter number of cloudlet PEs (Processing Elements): (0 - if you don't wish to enter)")
+  println("Please enter number of cloudlet PEs (Processing Elements): (0 - if nothing is to be set as the input)")
   val cloudletPEs: Int = scala.io.StdIn.readInt()
   println("Please choose your cloudlet scheduler policy from among the following: 1.Time-Shared  2.Space-Shared  3.NA  (Please enter between 1-3):")
   val cloudletSchedulerType: Int = scala.io.StdIn.readInt()
@@ -47,7 +53,7 @@ object MySimulation3 {
   val operatingSystem: Int = scala.io.StdIn.readInt()
   println("Please enter your choice of VM allocation policy from among the following: 1.Round-Robin  2.Best Fit 3.First Fit 4.Simple 5.NA (Please enter between 1-5):")
   val vmAllocationPolicy: Int = scala.io.StdIn.readInt()
-  
+
   val SIM = "my_simulation3";
   val conf: Config = ConfigFactory.load(SIM + ".conf")
   val VMS: Int = conf.getInt(SIM + "." + "numVMs")
@@ -61,21 +67,17 @@ object MySimulation3 {
 
 
   if (cloudletLength != 0 && numberOfCloudlets == 0 && cloudletPEs == 0 && getCloudletSchedulerType(cloudletSchedulerType) == null && getOperatingSystemType(operatingSystem) == "NA") {
-    //      Faas
-    createDatacenter(conf.getInt(SIM + "." + "datacenter0" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes")
-      , getVMAllocationPolicy(vmAllocationPolicy), "datacenter0")
+    //      In Function as a service the broker has access
+    createDatacenter(conf.getInt(SIM + "." + "datacenter0" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes"), getVMAllocationPolicy(vmAllocationPolicy), "datacenter0")
   } else if (cloudletLength != 0 && numberOfCloudlets != 0 && cloudletPEs != 0 && getCloudletSchedulerType(cloudletSchedulerType) == null && getOperatingSystemType(operatingSystem) == "NA") {
-    //      Saas
-    createDatacenter(conf.getInt(SIM + "." + "datacenter0" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes")
-      , getVMAllocationPolicy(vmAllocationPolicy), "datacenter0")
+    //      In Software as a service the broker has access upto the selection of the number of processing elements of the cloudlet
+    createDatacenter(conf.getInt(SIM + "." + "datacenter0" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes"), getVMAllocationPolicy(vmAllocationPolicy), "datacenter0")
   } else if (cloudletLength != 0 && numberOfCloudlets != 0 && cloudletPEs != 0 && getCloudletSchedulerType(cloudletSchedulerType) != null && getOperatingSystemType(operatingSystem) == "NA") {
-    //      Paas
-    createDatacenter(conf.getInt(SIM + "." + "datacenter1" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes")
-      , getVMAllocationPolicy(vmAllocationPolicy), "datacenter1")
+    //      In Platform as a service the broker has access upto the scheduleer policy of the cloudlet
+    createDatacenter(conf.getInt(SIM + "." + "datacenter1" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes"), getVMAllocationPolicy(vmAllocationPolicy), "datacenter1")
   } else if (cloudletLength != 0 && numberOfCloudlets != 0 && cloudletPEs != 0 && getCloudletSchedulerType(cloudletSchedulerType) != null && getOperatingSystemType(operatingSystem) != "NA") {
-    //      Iaas
-    createDatacenter(conf.getInt(SIM + "." + "datacenter2" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes")
-      , getVMAllocationPolicy(vmAllocationPolicy), "datacenter2")
+    //      In Infrastructure as a service the broker has access upto the operating system of the data center
+    createDatacenter(conf.getInt(SIM + "." + "datacenter2" + ".numberHosts"), conf.getInt(SIM + "." + "host" + ".pes"), getVMAllocationPolicy(vmAllocationPolicy), "datacenter2")
   }
 
   val vmList: util.List[Vm] = createVms(getCloudletSchedulerType(cloudletSchedulerType))
@@ -179,4 +181,3 @@ object MySimulation3 {
     MySimulation3
   }
 }
-
