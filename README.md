@@ -56,7 +56,7 @@ The following logic is used to differentiate between the different data centers 
 In-depth explanation regarding the various configurations and policies used in these different simulations and how they affect the obtained results are provided in the code comments.
 ## Results Analysis
 
-###MySimulation1:
+MySimulation1:
 
 SIMULATION RESULTS
 
@@ -77,7 +77,7 @@ ID|       |ID|  ID|CPU cores|ID|CPU cores|         MI|  CPU cores|  Seconds|   S
        9|SUCCESS| 2|   2|        8| 9|        2|       1000|          2|        0|         1|       1|            1.0|      20.0
 --------------------------------------------------------------------------------------------------------------------------------
 
-###MySimulation2:
+MySimulation2:
 
                                                              SIMULATION 2 RESULTS
 
@@ -111,7 +111,7 @@ MySimulation2 uses -
 The price difference incurred in the models can be attributed to the cloudlet utilization model as in the full utilization model no additional cloudlets will be served by a VM until it's instructions are fully processed. This overhead is reduced when the 
 cloudlets are dynamically serviced by the VM based on the utilization percentage defined. 
 
-###MySimulation3:
+MySimulation3:
 
                                                        SIMULATION 3 RESULTS
 
