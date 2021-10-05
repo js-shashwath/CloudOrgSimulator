@@ -26,9 +26,9 @@ Grading Criteria:
  - no instructions in README.md on how to install and run your simulator:
     * instructions present, but no command line instructions: -0.5%
  - the program crashes without completing the core functionality:
-    * program doesn't compile without fixing versioningL -1.5%
+    * program doesn't compile without fixing versioningL -0.5%
  - the documentation exists but it is insufficient to understand your cloud simulation design and models and how you assembled and deployed all components of the cloud:
     * documentation exists: -0%
-Total grade: 5%
+Total grade: 6%
 Comments: In your build.sbt file you scala version is wrong (3.2.0 isn't even out). 
 Also something got messed up when I pushed to your repo, my bad, I'll try to fix it. 
